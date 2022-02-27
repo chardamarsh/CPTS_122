@@ -28,7 +28,7 @@ public:
 	void setName(string newName);
 	void setDate(string newDate);
 
-	void editExerciseGoal(ExercisePlan dailygoal);
+	void editExerciseGoal();
 
 private:
 	int cSteps;

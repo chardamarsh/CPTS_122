@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <fstream>
 #include <vector>
 
 using std::cin;
@@ -26,7 +27,7 @@ public:
 	void setName(string newName);
 	void setDate(string newDate);
 
-	void editDietGoal(DietPlan dailygoal);
+	void editDietGoal();
 
 private:
 	int cCalories;
@@ -34,7 +35,7 @@ private:
 	string cDate;
 };
 
-std::ofstream& operator<<(std::ofstream& lhs, const DietPlan& rhs);
+std::ifstream& operator>>(std::ifstream& lhs, DietPlan& rhs);
 std::ostream& operator<<(std::ostream& lhs, const DietPlan& rhs);
 
 //In the same file in which each class declaration exists, three nonmember functions must be declared.
