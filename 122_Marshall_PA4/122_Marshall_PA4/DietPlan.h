@@ -1,3 +1,19 @@
+/* Programmer: Charles Marshall
+*
+Class : CPTS 122; Lab section 13
+
+Programming Assignment : PA 4 : Fitness Application in C++
+
+Date : 3 - 2 - 2022
+
+Description : This file contains the class DietPlan, necessary to do the following:
+
+Get, set, and destruct objects of class DietPlan;
+edit individual diet plans;
+and overloaded operators to read and write information contained in objects of class DietPlan to and from input and output files.
+
+*/
+
 #pragma once
 
 #include <iostream>
@@ -16,7 +32,7 @@ class DietPlan
 {
 public:
 	DietPlan(int calories = 0, string name = "", string date = "");
-	DietPlan(DietPlan& copyPlan);
+	DietPlan(const DietPlan& copyPlan);
 	~DietPlan();
 
 	int getCalories() const;
@@ -35,11 +51,6 @@ private:
 	string cDate;
 };
 
-std::ifstream& operator>>(std::ifstream& lhs, DietPlan& rhs);
-std::ostream& operator<<(std::ostream& lhs, const DietPlan& rhs);
-
-//In the same file in which each class declaration exists, three nonmember functions must be declared.
-//Note: an overloaded operator is considered an overloaded function. The overloaded stream insertion (<<) for both displaying a plan to the screen and for writing a plan to a file, and the extraction (>>) operator for reading a plan from a file.
-
- 
-
+std::ifstream& operator>> (std::ifstream& lhs, DietPlan& rhs);
+std::ostream& operator<< (std::ostream& lhs, const DietPlan& rhs);
+std::ofstream& operator<< (std::ofstream& lhs, const DietPlan& rhs);

@@ -1,3 +1,19 @@
+/* Programmer: Charles Marshall
+*
+Class : CPTS 122; Lab section 13
+
+Programming Assignment : PA 4 : Fitness Application in C++
+
+Date : 3 - 2 - 2022
+
+Description : This file contains the class functions necessary to do the following:
+
+Get, set, and destruct objects of class ExercisePlan;
+edit individual exercise plans;
+and overloaded operators to read and write information contained in objects of class ExercisePlan to and from input and output files.
+
+*/
+
 #include "ExercisePlan.h"
 
 ExercisePlan::ExercisePlan(int calories, string name, string date)
@@ -13,7 +29,7 @@ ExercisePlan::ExercisePlan(int calories, string name, string date)
 	cName = name;
 	cDate = date;
 }
-ExercisePlan::ExercisePlan(ExercisePlan& copyPlan)
+ExercisePlan::ExercisePlan(const ExercisePlan& copyPlan)
 {
 	cSteps = copyPlan.getSteps();
 	cName = copyPlan.getName();
@@ -21,7 +37,7 @@ ExercisePlan::ExercisePlan(ExercisePlan& copyPlan)
 }
 ExercisePlan::~ExercisePlan()
 {
-	cout << "Exercise Plan entry deleted." << endl;
+	//cout << "Exercise Plan cleared." << endl;
 }
 int ExercisePlan::getSteps() const
 {
@@ -81,14 +97,63 @@ void ExercisePlan::editExerciseGoal()
 		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard input
 		cout << "Invalid input; please re-enter.\n" << endl;
 	}
-	while (cout << "Day(DD):" << endl && !(cin >> y) || (y < 1))
+	while (cout << "Year(YYYY):" << endl && !(cin >> y) || (y < 1))
 	{
 		cin.clear(); //clear bad input flag
 		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard input
 		cout << "Invalid input; please re-enter.\n" << endl;
 	}
 
-	date = m + '/' + d + '/' + y;
+	if (m < 10)
+	{
+		date += '0';
+	}
+	date += std::to_string(m) + '/';
+	if (d < 10)
+	{
+		date += '0';
+	}
+	date += std::to_string(d) + '/';
+
+	date += std::to_string(y);
+
 	this->setDate(date);
 	cout << "Update Completed." << endl;
+}
+
+std::ifstream& operator>> (std::ifstream& lhs, ExercisePlan& rhs)
+{
+	string name, date, steps;
+	if (!lhs)
+	{
+		cout << "File not found" << endl;
+	}
+	if (lhs.fail())
+	{
+		cout << "Error reading data" << endl;
+	}
+	else
+	{
+		std::getline(lhs, name);
+		std::getline(lhs, steps);
+		std::getline(lhs, date);
+
+		rhs.setSteps(atoi(steps.c_str()));
+		rhs.setName(name);
+		rhs.setDate(date);
+		lhs.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	}
+	return lhs;
+
+}
+std::ostream& operator<< (std::ostream& lhs, const ExercisePlan& rhs)
+{
+	lhs << "\nDiet Name: " << rhs.getName() << "\nTarget Calories: " << rhs.getSteps() << "\nDate: " << rhs.getDate() << endl;
+	return lhs;
+}
+
+std::ofstream& operator<< (std::ofstream& lhs, const ExercisePlan& rhs)
+{
+	lhs << rhs.getName() << '\n' << rhs.getSteps() << '\n' << rhs.getDate() << '\n' << endl;
+	return lhs;
 }
